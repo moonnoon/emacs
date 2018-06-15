@@ -19,7 +19,7 @@
      ("melpa" . "http://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (ace-window anzu auctex avy cnfonts company company-c-headers company-irony company-irony-c-headers company-jedi company-quickhelp elpy flycheck flycheck-irony google-c-style helm helm-ag helm-core helm-projectile helm-swoop iedit imenu-list irony ivy magit move-text multiple-cursors projectile pyenv smartparens swiper switch-window undo-tree use-package virtualenvwrapper volatile-highlights which-key yasnippet yasnippet-snippets ztree zzz-to-char)))
+    (ace-window anzu auctex avy cnfonts company company-c-headers company-irony company-irony-c-headers company-jedi company-quickhelp elpy flycheck flycheck-irony google-c-style helm helm-ag helm-projectile helm-swoop iedit imenu-list irony ivy magit move-text multiple-cursors projectile pyenv smartparens swiper switch-window undo-tree use-package virtualenvwrapper volatile-highlights which-key yasnippet yasnippet-snippets ztree zzz-to-char)))
  '(tool-bar-mode nil)
  '(transient-mark-mode (quote (only . t))))
 
@@ -35,7 +35,7 @@
  :font (font-spec :name "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-*-*-*-*-m-0-iso10646-1"
                   :weight 'normal
                   :slant 'normal
-                  :size 11.0))
+                  :size 11.5))
 (dolist (charset '(kana han symbol cjk-misc bopomofo))
   (set-fontset-font
    (frame-parameter nil 'font)
@@ -61,6 +61,11 @@
 (setq kill-whole-line t)
 
 ;; whitespace-mode
+;; no tab
+(setq-default indent-tabs-mode nil)
+;; M-x untabify
+;; M-x tabify
+;; C-q <tab> to add a tab if really want to.
 
 ;; (setq debug-on-error t) toggle-debug-on-error
 ;; 
@@ -225,6 +230,7 @@
 ;; C-c p i projectile-invalidate-cache, use it after add a new file
 ;; (add-to-list 'projectile-globally-ignored-files "*.pyc")
 (add-to-list 'projectile-globally-ignored-file-suffixes "pyc")
+(add-to-list 'projectile-globally-ignored-directories "build")
 ;; (add-to-list 'projectile-globally-ignored-directories "app")
 (with-eval-after-load "helm-projectile"
   (define-key projectile-mode-map (kbd "C-c p s") 'helm-projectile-ag))
@@ -312,7 +318,7 @@
 (global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
 (global-set-key (kbd "S-C-<down>") 'shrink-window)
 (global-set-key (kbd "S-C-<up>") 'enlarge-window)
-;; C-x 0 to combine window
+;; C-x 0 to combine window, close current window
 
 
 ;; M-x revert-buffer
@@ -361,7 +367,8 @@
 (add-to-list 'company-backends 'company-irony)
 (add-hook 'c-mode-common-hook 'irony-mode)
 ;; (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-(add-to-list 'company-backends 'company-irony-c-headers)
+;; (add-to-list 'company-backends 'company-irony-c-headers)
+(add-to-list 'company-backends 'company-c-headers)
 ;; (add-hook 'after-save-hook (lambda (irony-get-type)))  ;; fix irony bug
 (add-hook 'c++-mode-hook
 	  (lambda ()
@@ -464,3 +471,6 @@ i.e. change right window to bottom, or change bottom window to right."
 (put 'narrow-to-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 ;; downcase-word (M-l) upcase-word (M-u)
+
+;; js
+(add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
