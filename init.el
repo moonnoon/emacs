@@ -1,6 +1,8 @@
 ;;start package.el with emacs
 (require 'package)
 
+;; ace-window anzu auctex avy cnfonts company company-c-headers company-irony company-irony-c-headers company-jedi company-quickhelp elpy flycheck flycheck-irony google-c-style helm helm-ag helm-projectile helm-swoop iedit imenu-list irony ivy magit move-text multiple-cursors projectile pyenv smartparens swiper switch-window undo-tree use-package virtualenvwrapper volatile-highlights which-key yasnippet yasnippet-snippets ztree zzz-to-char
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -17,9 +19,6 @@
    (quote
     (("gnu" . "http://elpa.gnu.org/packages/")
      ("melpa" . "http://melpa.org/packages/"))))
- '(package-selected-packages
-   (quote
-    (ace-window anzu auctex avy cnfonts company company-c-headers company-irony company-irony-c-headers company-jedi company-quickhelp elpy flycheck flycheck-irony google-c-style helm helm-ag helm-projectile helm-swoop iedit imenu-list irony ivy magit move-text multiple-cursors projectile pyenv smartparens swiper switch-window undo-tree use-package virtualenvwrapper volatile-highlights which-key yasnippet yasnippet-snippets ztree zzz-to-char)))
  '(tool-bar-mode nil)
  '(transient-mark-mode (quote (only . t))))
 
@@ -181,13 +180,13 @@
 ;; helm-mini M-a to mark all, M-D (M-S-d) to kill marked buffer
 ;; pattern: *[!,exclude]mode buffername @search , C-s to list search result
 (global-set-key (kbd "C-x b") 'helm-mini)
-(global-set-key (kbd "C-c C-f") 'helm-find) ;; C-u to change dir, suspend/resume update with C-!
+;; (global-set-key (kbd "C-c C-f") 'helm-find) use default C-c h / ;; C-u to change dir, suspend/resume update with C-!
 ;; prefix l helm-locate 
 ;; prefix i helm-semantic-or-imenu
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (global-set-key (kbd "C-h SPC") 'helm-all-mark-rings)
 (global-set-key (kbd "C-c h") 'helm-command-prefix)
-;; helm-command-prefix b to helm-resume
+;; helm-command-prefix b to helm-resume, with C-u to choose difference session
 ;; make <tab> work normally, like C-j in helm.
 ;; (define-key helm-find-files-map "\t" 'helm-execute-persistent-action)
 ;; add <tab> helm-execute-persistent-action in helm-map helm-core/helm.el
@@ -288,12 +287,16 @@
 ;; M-x become C-x M-x in ansi-term, C-x is the prefix
 ;; use C-c C-j to switch to term-char-mode, C-c C-k to switch to term-line-mode
 ;; or use ctrl/shift-insert to copy/paste
+;; use tmux
+(with-eval-after-load "term"
+  (define-key term-raw-map (kbd "C-p") 'term-send-raw)
+  (define-key term-raw-map (kbd "C-n") 'term-send-raw)
+  (define-key term-raw-map (kbd "M-v") 'term-send-raw))
 
 (setq explicit-shell-file-name "/bin/bash")  ;; no use
 (setq term-ansi-default-program "/bin/bash") ;; no use too
 ;; (setq term-buffer-maximum-size 4096) ;; default 2048
 ;; (term-pager-enable)
-
 
 ;; multi-term
 ;; (defun term-send-f ()
@@ -379,9 +382,9 @@
 	    ;; 	  '(idle-change))))
 
 ;; M-x irony-server-kill to kill irony-server
-;; (with-eval-after-load "flycheck"
-(eval-after-load 'flycheck
-  '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+
+(with-eval-after-load "flycheck"
+  (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
 
 ;; change window orientation
